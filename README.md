@@ -29,7 +29,7 @@ The purpose of these insights is to provide stakeholders with key business metri
 ## Data Architekture:
 The data architekture for this project follows the Medallion Architekture with the following layers:
 
-(Scetch for Archtekture insert here)
+![Data Architekture](documents/data_architekture.png)
 
 - **Bronze Layer: Stores the raw data as-is from the source systems. Data is ingested from CSV Files into SQL Server Database.**
 - **Silver Layer: The focus of this layer is on cleaning, standardizing, and normalizing the data. This prepares the data for analysis.**
