@@ -1,10 +1,10 @@
 /*
-Erstellung der Database und der Schamas
+Erstellung der Database und der Schamas.
 ----------------------------------------
 Funktionsweise des Scripts:
   Die Datenbank namens "DataWarehouse" wird erzeugt, nachdem überprüft wurde, ob nicht bereits eine vorhanden ist. 
   Falls dem der Fall ist, wird diese gelöscht und an ihrer Stelle eine neue erzeugt. Darauf folgt das Erstellen der Schemas 
-  (Bronze, Silver, Gold)
+  (Bronze, Silver, Gold).
 ----------------------------------------
 Zu beachten:
   Durch die Ausführung dieses Scripts wird eine möglicherweise bestehende Datenbank namens "DataWarehouse" für immer gelöscht.
