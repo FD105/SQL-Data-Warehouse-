@@ -1,5 +1,5 @@
 /*
-DDL Script, welches die Bronze Tables erstellt
+DDL Script, welches die Bronze Tables erstellt.
 ------------------------------------------------
 Zu beachten:
 	Das Script erstellt die Table für das Bronze-Schema.
