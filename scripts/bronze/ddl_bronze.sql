@@ -5,6 +5,8 @@ Zu beachten:
 	Das Script erstellt die Table für das Bronze-Schema.
 	Bereits bestehende Table werden beim Ausführung des Scripts verworfen.
 */
+
+
 IF OBJECT_ID ('bronze.crm_cust_info' , 'U') IS NOT NULL
 	DROP TABLE bronze.crm_cust_info;
 GO
