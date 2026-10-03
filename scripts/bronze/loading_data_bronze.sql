@@ -1,6 +1,10 @@
 /*
-
-
+Ein Stored Procedure wird erstellt.
+------------------------------------------------
+Zu beachten:
+	Dieses Prozedere lädt Daten aus externen CSV-Dateien in das Bronze-Schema.
+	Es wird mit TRUNCATE gearbeitet, daher sollte sichergestellt werden, dass nicht die falschen Datensätze gelöscht werden.
+	Der Aufruf für das Stored Procedure befidnet sich am Anfang der Scripts und ist auskommentiert, damit dieser nicht aus Versehen ausgeführt wird.
 */
 
 
