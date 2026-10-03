@@ -10,18 +10,18 @@ Building the Data Warehouse
 This step includes the developement of the data warehouse using SQL-Server where the sales data will be combined. Analyzing this data enables analytical reporting and sound decision-making based on the results.
 
 #### Specifications
-Data Sources: Data is imported from two source systems (ERP and CRM) provided as CSV files.
-Data Quality: Data quality issues are resolved prior to analysis by cleaning the data.
-Integration: The two sources are being merged into one. This source is intended to be a user-friendly data model that will be used for analytical queries.
-Scope: Historization is not used, as only the latest data is processed.
-Documentation: The documentation should provide a clear overview of the data model for both non-experts and experts.
+- **Data Sources**: Data is imported from two source systems (ERP and CRM) provided as CSV files.
+- **Data Quality**: Data quality issues are resolved prior to analysis by cleaning the data.
+- **Integration**: The two sources are being merged into one. This source is intended to be a user-friendly data model that will be used for analytical queries.
+- **Scope**: Historization is not used, as only the latest data is processed.
+- **Documentation**: The documentation should provide a clear overview of the data model for both non-experts and experts.
 
 #### Analytics and Reporting
 
 The second step includes the developement of SQL-based analytics to deliver detailed insights into:
-Customer Behavior
-Product Performance
-Sales Trends
+- **Customer Behavior**
+- **Product Performance**
+- **Sales Trends**
 The purpose of these insights is to provide stakeholders with key business metrics, which are intended to lead to a strategic decision-making.
 
 ---
@@ -31,9 +31,9 @@ The data architekture for this project follows the Medallion Architekture with t
 
 <img width="1223" height="578" alt="Architektur" src="https://github.com/user-attachments/assets/6bb4f86b-77d2-4469-a0db-aa840219d81f" />
 
-- *Bronze Layer: Stores the raw data as-is from the source systems. Data is ingested from CSV Files into SQL Server Database.*
-- *Silver Layer: The focus of this layer is on cleaning, standardizing, and normalizing the data. This prepares the data for analysis.*
-- *Gold Layer: Includes business-ready data that is key for analytics and reporting.*
+- **Bronze Layer**: Stores the raw data as-is from the source systems. Data is ingested from CSV Files into SQL Server Database.
+- **Silver Layer**: The focus of this layer is on cleaning, standardizing, and normalizing the data. This prepares the data for analysis.
+- **Gold Layer**: Includes business-ready data that is key for analytics and reporting.
 
 ---
 
