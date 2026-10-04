@@ -1,3 +1,16 @@
+/*
+DDL Script, welches die Silber Tables erstellt.
+------------------------------------------------
+Zu beachten:
+	Das Script erstellt die Table für das Silber-Schema.
+	In den folgenden Schritten werden die Daten die in den Bronze Tables entahlten sind, 
+	bereinigt und dann in die Silber Tables überführt.
+	Die ersten vier Queries verfolgen den Zweck, erstmal zu testen, wo möglicher Weise 
+	Probleme in den Daten bestehen können und die Query am Ende setzt diese dann für den 
+	gesamten Table um.
+*/
+
+
 --testen, ob es Duplikate oder NULLs bei den Primary Keys gibt
 SELECT 
 cst_id,
@@ -33,7 +46,8 @@ WHERE cst_firstname != TRIM(cst_firstname)
 SELECT DISTINCT cst_gndr
 FROM bronze.crm_cust_info
 
-
+------------------------------------------------
+	
 --gesamte Query, welche die Daten bereinigt und diese Daten dann in die Silver-Schicht überträgt
 INSERT INTO silver.crm_cust_info (
 	cst_id,
