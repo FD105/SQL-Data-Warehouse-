@@ -9,6 +9,9 @@ Zu beachten:
 	Probleme in den Daten bestehen können und die Query am Ende der individuellen Blöcke setzt diese dann für den 
 	entsprechenden Table um.
 	Im folgenden gibt es sechs abgetrennte und mit dem dort behandelten Table gekennzeichneten Bereiche.
+	Ganz am Ende folgt der gesamte Code für alle Table der mittel TRUNCATE verhindert, dass Daten mehrfach in den selben Table 
+	eingefügt werden und dadurch Duplikate entstehen.
+	Da TRUNCATE die zuvor im Table enthaltenen Daten löscht, sollte dieses Script nur ausgeführt werden, wenn das so gewünscht ist.
 */
 
 ------------------------------------------------ ab hier wird crm_cust_info auf Unstimmigkeiten geprüft und dann geladen
@@ -329,3 +332,11 @@ cat,
 subcat,
 maintenance
 FROM bronze.erp_px_cat_g1v2
+
+
+
+
+	
+::::::::::::::::::::::::::::::::::::::::::::::::
+Ab hier folgt der Code mit TRUNCATE
+::::::::::::::::::::::::::::::::::::::::::::::::
