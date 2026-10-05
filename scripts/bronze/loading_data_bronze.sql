@@ -40,10 +40,6 @@ BEGIN
 		PRINT '>> Load Time: ' + CAST(DATEDIFF(millisecond, @start_time, @end_time) AS NVARCHAR) + ' milliseconds';
 		PRINT '-------------------------------------------';
 
-		--SELECT COUNT(*) FROM bronze.crm_cust_info
-
-		--SELECT * FROM bronze.crm_cust_info
-
 		SET @start_time = GETDATE();
 		PRINT '>> Truncating Table: bronze.crm_prd_info';
 		TRUNCATE TABLE bronze.crm_prd_info; 
