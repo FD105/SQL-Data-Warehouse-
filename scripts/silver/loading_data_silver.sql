@@ -233,3 +233,50 @@ CASE WHEN sls_price IS NULL OR sls_price <= 0
 	 ELSE sls_price
 END AS sls_price
 FROM bronze.crm_sales_details
+
+------------------------------------------------ ab hier wird erp_cust_az12 auf Unstimmigkeiten geprüft und dann geladen
+
+SELECT --bei den CIDs dafür sorgen, dass diese alle gelich aufgebaut sind
+CASE WHEN cid LIKE 'NAS%'
+		THEN SUBSTRING(cid, 4, LEN(cid))
+	 ELSE cid
+END AS cid,
+bdate,
+gen
+FROM bronze.erp_cust_az12
+
+SELECT --testen ob manche Geburtstage (über 100 Jahre zurückliegen oder noch) in der Zukunft liegen
+bdate
+FROM bronze.erp_cust_az12
+WHERE bdate < '1924-01-01' OR bdate > GETDATE()
+
+
+SELECT DISTINCT --Geschlechter auf Unstimmigkeiten prüfen und wenn nötig vereinheitlichen
+gen,
+CASE WHEN UPPER(TRIM(gen)) IN ('F', 'FEMALE') THEN 'Female' -- TRIM und UPPER falls es in Zukunft mal Leerzeichen oder unterschiedliche Schreibweisen gibt
+	 WHEN UPPER(TRIM(gen)) IN ('M', 'MALE') THEN 'Male'
+	 ELSE 'n/a'
+END AS gen
+FROM bronze.erp_cust_az12
+
+------------------------------------------------
+	
+--gesamte Query, welche die Daten bereinigt und diese Daten dann in die Silver-Schicht überträgt
+INSERT INTO silver.erp_cust_az12 (
+cid,
+bdate,
+gen
+)
+SELECT
+CASE WHEN cid LIKE 'NAS%'
+		THEN SUBSTRING(cid, 4, LEN(cid))
+	 ELSE cid
+END AS cid,
+CASE WHEN bdate > GETDATE() THEN NULL
+	 ELSE bdate
+END AS bdate,
+CASE WHEN UPPER(TRIM(gen)) IN ('F', 'FEMALE') THEN 'Female' -- TRIM und UPPER falls es in Zukunft mal Leerzeichen oder unterschiedliche Schreibweisen gibt
+	 WHEN UPPER(TRIM(gen)) IN ('M', 'MALE') THEN 'Male'
+	 ELSE 'n/a'
+END AS gen
+FROM bronze.erp_cust_az12
