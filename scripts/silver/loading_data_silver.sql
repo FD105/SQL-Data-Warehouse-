@@ -302,3 +302,30 @@ CASE WHEN UPPER(TRIM(cntry)) IN ('DE', 'GERMANY') THEN 'Germany'
 	 ELSE TRIM(cntry)
 END AS cntry
 FROM bronze.erp_loc_a101
+
+------------------------------------------------ ab hier wird erp_px_cat_g1v2 auf Unstimmigkeiten geprüft und dann geladen
+
+SELECT * --auf nicht gewollte Leerzeichen testen
+FROM bronze.erp_px_cat_g1v2
+WHERE cat != TRIM(cat) OR subcat != TRIM(subcat) OR maintenance != TRIM(maintenance)
+
+
+SELECT DISTINCT --testen, ob gegebene Namen nicht variieren
+maintenance
+FROM bronze.erp_px_cat_g1v2
+
+------------------------------------------------
+	
+--gesamte Query, welche die Daten bereinigt und diese Daten dann in die Silver-Schicht überträgt
+INSERT INTO silver.erp_px_cat_g1v2 (
+id,
+cat,
+subcat,
+maintenance
+)
+SELECT 
+id,
+cat,
+subcat,
+maintenance
+FROM bronze.erp_px_cat_g1v2
