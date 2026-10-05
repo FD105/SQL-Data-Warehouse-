@@ -280,3 +280,25 @@ CASE WHEN UPPER(TRIM(gen)) IN ('F', 'FEMALE') THEN 'Female' -- TRIM und UPPER fa
 	 ELSE 'n/a'
 END AS gen
 FROM bronze.erp_cust_az12
+
+------------------------------------------------ ab hier wird erp_loc_a101 auf Unstimmigkeiten geprüft und dann geladen
+
+SELECT DISTINCT --testen in welchen Formen cntry vorliegt
+cntry
+FROM bronze.erp_loc_a101
+
+------------------------------------------------
+	
+--gesamte Query, welche die Daten bereinigt und diese Daten dann in die Silver-Schicht überträgt
+INSERT INTO silver.erp_loc_a101 (
+cid,
+cntry
+)
+SELECT
+REPLACE(cid, '-', '') AS cid,
+CASE WHEN UPPER(TRIM(cntry)) IN ('DE', 'GERMANY') THEN 'Germany'
+	 WHEN UPPER(TRIM(cntry)) IN ('US', 'USA', 'UNITED STATES') THEN 'United States'
+	 WHEN TRIM(cntry) = '' OR cntry IS NULL THEN 'n/a'
+	 ELSE TRIM(cntry)
+END AS cntry
+FROM bronze.erp_loc_a101
