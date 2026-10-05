@@ -397,7 +397,7 @@ BEGIN
 		) t
 		WHERE flag_last = 1;
 		SET @end_time = GETDATE();
-        PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(millisecond, @start_time, @end_time) AS NVARCHAR) + ' milliseconds';
         PRINT '>> -------------';
 
         SET @start_time = GETDATE();
@@ -420,12 +420,12 @@ BEGIN
 			SUBSTRING(prd_key, 7, LEN(prd_key)) AS prd_key,
 			prd_nm,
 			ISNULL(prd_cost, 0) AS prd_cost,
-			CASE 
-				WHEN UPPER(TRIM(prd_line)) = 'M' THEN 'Mountain'
-				WHEN UPPER(TRIM(prd_line)) = 'R' THEN 'Road'
-				WHEN UPPER(TRIM(prd_line)) = 'S' THEN 'Other Sales'
-				WHEN UPPER(TRIM(prd_line)) = 'T' THEN 'Touring'
-				ELSE 'n/a'
+			CASE UPPER(TRIM(prd_line))
+				 WHEN 'M' THEN 'Mountain'
+				 WHEN 'R' THEN 'Road'
+				 WHEN 'S' THEN 'Other Sales'
+				 WHEN 'T' THEN 'Touring'
+				 ELSE 'n/a'
 			END AS prd_line,
 			CAST(prd_start_dt AS DATE) AS prd_start_dt,
 			CAST(
@@ -434,7 +434,7 @@ BEGIN
 			) AS prd_end_dt
 		FROM bronze.crm_prd_info;
         SET @end_time = GETDATE();
-        PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(millisecond, @start_time, @end_time) AS NVARCHAR) + ' milliseconds';
         PRINT '>> -------------';
 
         SET @start_time = GETDATE();
@@ -481,7 +481,7 @@ BEGIN
 			END AS sls_price
 		FROM bronze.crm_sales_details;
         SET @end_time = GETDATE();
-        PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(millisecond, @start_time, @end_time) AS NVARCHAR) + ' milliseconds';
         PRINT '>> -------------';
 
         SET @start_time = GETDATE();
@@ -495,7 +495,8 @@ BEGIN
 		)
 		SELECT
 			CASE
-				WHEN cid LIKE 'NAS%' THEN SUBSTRING(cid, 4, LEN(cid)) 
+				WHEN cid LIKE 'NAS%'	
+					THEN SUBSTRING(cid, 4, LEN(cid)) 
 				ELSE cid
 			END AS cid, 
 			CASE
@@ -509,7 +510,7 @@ BEGIN
 			END AS gen
 		FROM bronze.erp_cust_az12;
 	    SET @end_time = GETDATE();
-        PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(millisecond, @start_time, @end_time) AS NVARCHAR) + ' milliseconds';
         PRINT '>> -------------';
 
 		PRINT '------------------------------------------------';
@@ -526,15 +527,14 @@ BEGIN
 		)
 		SELECT
 			REPLACE(cid, '-', '') AS cid, 
-			CASE
-				WHEN TRIM(cntry) = 'DE' THEN 'Germany'
-				WHEN TRIM(cntry) IN ('US', 'USA') THEN 'United States'
-				WHEN TRIM(cntry) = '' OR cntry IS NULL THEN 'n/a'
-				ELSE TRIM(cntry)
+			CASE WHEN UPPER(TRIM(cntry)) IN ('DE', 'GERMANY') THEN 'Germany'
+				 WHEN UPPER(TRIM(cntry)) IN ('US', 'USA', 'UNITED STATES') THEN 'United States'
+				 WHEN TRIM(cntry) = '' OR cntry IS NULL THEN 'n/a'
+				 ELSE TRIM(cntry)
 			END AS cntry
 		FROM bronze.erp_loc_a101;
 	    SET @end_time = GETDATE();
-        PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+        PRINT '>> Load Duration: ' + CAST(DATEDIFF(millisecond, @start_time, @end_time) AS NVARCHAR) + ' milliseconds';
         PRINT '>> -------------';
 		
 		SET @start_time = GETDATE();
@@ -554,13 +554,13 @@ BEGIN
 			maintenance
 		FROM bronze.erp_px_cat_g1v2;
 		SET @end_time = GETDATE();
-		PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+		PRINT '>> Load Duration: ' + CAST(DATEDIFF(millisecond, @start_time, @end_time) AS NVARCHAR) + ' milliseconds';
         PRINT '>> -------------';
 
 		SET @batch_end_time = GETDATE();
 		PRINT '::::::::::::::::::::::::::::::::::::::::::::::::'
 		PRINT 'Loading Silver Layer is Completed';
-        PRINT '   - Total Load Duration: ' + CAST(DATEDIFF(SECOND, @batch_start_time, @batch_end_time) AS NVARCHAR) + ' seconds';
+        PRINT '   - Total Load Duration: ' + CAST(DATEDIFF(millisecond, @batch_start_time, @batch_end_time) AS NVARCHAR) + ' milliseconds';
 		PRINT '::::::::::::::::::::::::::::::::::::::::::::::::'
 		
 	END TRY
