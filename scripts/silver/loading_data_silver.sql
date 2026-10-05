@@ -9,8 +9,9 @@ Zu beachten:
 	Probleme in den Daten bestehen können und die Query am Ende der individuellen Blöcke setzt diese dann für den 
 	entsprechenden Table um.
 	Im folgenden gibt es sechs abgetrennte und mit dem dort behandelten Table gekennzeichneten Bereiche.
-	Ganz am Ende folgt der gesamte Code für alle Table der mittel TRUNCATE verhindert, dass Daten mehrfach in den selben Table 
-	eingefügt werden und dadurch Duplikate entstehen.
+
+	Ganz am Ende folgt der gesamte Code für alle Table wo mittels TRUNCATE verhindert wird, dass Daten mehrfach in den selben Table 
+	eingefügt werden und dadurch Duplikate entstehen. Das Script erstellt, wie das im Bronze-Layer, ein Stored-Procedure.
 	Da TRUNCATE die zuvor im Table enthaltenen Daten löscht, sollte dieses Script nur ausgeführt werden, wenn das so gewünscht ist.
 */
 
