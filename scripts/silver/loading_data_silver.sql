@@ -346,6 +346,8 @@ Ab hier folgt der Code mit TRUNCATE
 
 
 
+--EXECUTE silver.load_silver --mittels dieses Befehls, lässt sich die darunter definierte Prozedur aufrufen
+	
 CREATE OR ALTER PROCEDURE silver.load_silver AS
 BEGIN
     DECLARE @start_time DATETIME, @end_time DATETIME, @batch_start_time DATETIME, @batch_end_time DATETIME; 
