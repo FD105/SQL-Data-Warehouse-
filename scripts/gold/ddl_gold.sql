@@ -2,8 +2,8 @@
 DDL Script, welches die Gold Views erstellt.
 ------------------------------------------------
 Zu beachten:
-	Das Script erstellt die Table für das Bronze-Schema.
-	Bereits bestehende Table werden beim Ausführung des Scripts verworfen.
+	Zuerst folgen wenige, kleine Tests, anhand derer getestet wird, welche 
+	Spalten noch zusammengeführt werden müssen oder ähnliches, bevor die jeweilige View erstellt wird.
 */
 
 SELECT cst_id, COUNT(*) --testen, ob es auch wirklich keine Duplikate gibt
@@ -42,8 +42,9 @@ LEFT JOIN silver.erp_loc_a101 AS la
 ON ci.cst_key = la.cid
 ORDER BY 1,2
 
-----
-
+------------------------------------------------
+	
+--gesamte Query, welche die die View erstellt
 CREATE VIEW gold.dim_customers AS 
 SELECT 
 	ROW_NUMBER() OVER (ORDER BY cst_id) AS customer_key, --surrogate key wird verwendet
@@ -63,3 +64,24 @@ LEFT JOIN silver.erp_cust_az12 AS ca
 ON ci.cst_key = ca.cid
 LEFT JOIN silver.erp_loc_a101 AS la
 ON ci.cst_key = la.cid
+
+------------------------------------------------
+	
+--gesamte Query, welche die die View erstellt
+CREATE VIEW gold.dim_products AS
+SELECT 
+ROW_NUMBER() OVER (ORDER BY pn.prd_start_dt,pn.prd_key) AS product_key,
+pn.prd_id AS product_id,
+pn.prd_key AS product_number,
+pn.prd_nm AS product_name,
+pn.cat_id AS category_id,
+pc.cat AS category,
+pc.subcat AS subcategory,
+pc.maintenance,
+pn.prd_cost AS cost,
+pn.prd_line AS product_line,
+pn.prd_start_dt AS start_date
+FROM silver.crm_prd_info AS pn
+LEFT JOIN silver.erp_px_cat_g1v2 AS pc
+ON pn.cat_id = pc.id
+WHERE prd_end_dt IS NULL --alle in der Vergangenheit liegenden Daten sollen nicht in der gold-view inbegriffen sein
