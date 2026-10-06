@@ -5,7 +5,7 @@ Zu beachten:
 	Das Script erstellt die Table für das Silber-Schema.
 	In den folgenden Schritten werden die Daten die in den Bronze Tables entahlten sind, 
 	bereinigt und dann in die Silber Tables überführt.
-	Die vorn an die eigentliche INSERT-Query angestellten Queries verfolgten den Zweck, erstmal zu testen, wo möglicher Weise 
+	Die vorne an die eigentliche INSERT-Query angestellten Queries verfolgten den Zweck, erstmal zu testen, wo möglicher Weise 
 	Probleme in den Daten bestehen können und die Query am Ende der individuellen Blöcke setzt diese dann für den 
 	entsprechenden Table um.
 	Im folgenden gibt es sechs abgetrennte und mit dem dort behandelten Table gekennzeichneten Bereiche.
