@@ -1,5 +1,16 @@
+/*
+Auf Grundlage der zuvor bereinigten Daten wird in diesem Abschnitt nun noch tiefer in 
+die Daten eingetaucht, um eine genauerer Analyse dieser bereitstellen zu können.
+Dabei wird folgendes betrachtet:
+- Change-Over-Time
+- Cumulative Analysis
+- Performance Analysis
+- Part-to-Whole
+- Data Segmentation
+- Reporting
+*/
 
-Change over time
+------------------------------------------------ ab hier folgen SQL-Auszüge für dem Change-Over-Time
 
 SELECT -- gesamte Verkäufe pro Jahr
 YEAR(order_date) AS order_year,
