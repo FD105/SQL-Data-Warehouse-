@@ -12,7 +12,8 @@ Dabei wird folgendes betrachtet:
 
 ------------------------------------------------ ab hier folgen SQL-Auszüge für dem Change-Over-Time
 
-SELECT -- gesamte Verkäufe pro Jahr
+ -- gesamte Verkäufe pro Jahr
+SELECT
 YEAR(order_date) AS order_year,
 SUM(sales_amount) AS total_sales,
 COUNT(DISTINCT customer_key) AS total_customers,
@@ -22,7 +23,8 @@ WHERE order_date IS NOT NULL
 GROUP BY YEAR(order_date)
 ORDER BY YEAR(order_date)
 
-SELECT -- gesamte Verkäufe pro Monat 
+ -- gesamte Verkäufe pro Monat 
+SELECT 
 MONTH(order_date) AS order_month,
 SUM(sales_amount) AS total_sales,
 COUNT(DISTINCT customer_key) AS total_customers,
@@ -32,7 +34,8 @@ WHERE order_date IS NOT NULL
 GROUP BY MONTH(order_date)
 ORDER BY MONTH(order_date)
 
-SELECT -- gesamte Verkäufe pro Monat und Jahr in einer Tabelle vereint
+ -- gesamte Verkäufe pro Monat und Jahr in einer Tabelle vereint
+SELECT 
 DATETRUNC(month, order_date) AS order_month,
 SUM(sales_amount) AS total_sales,
 COUNT(DISTINCT customer_key) AS total_customers,
@@ -43,8 +46,9 @@ GROUP BY DATETRUNC(month, order_date)
 ORDER BY DATETRUNC(month, order_date)
 
 ------------------------------------------------ ab hier folgen SQL-Auszüge für der Cumulative Analysis
-
-SELECT -- Berechnen des gesamten Gewinns pro Jahr sowie der kumulativen Gewinne und durchschnittlichen Preise der Produkte über die Jahre
+ 
+-- Berechnen des gesamten Gewinns pro Jahr sowie der kumulativen Gewinne und durchschnittlichen Preise der Produkte über die Jahre
+SELECT 
 order_date,
 total_sales,
 SUM(total_sales) OVER (ORDER BY order_date) AS runing_total_sales,
@@ -95,5 +99,25 @@ END AS previous_year_change
 FROM yearly_product_sales
 ORDER BY  product_name, order_year 
 
------------------------------------------------- ab hier folgen SQL-Auszüge für das Part-tp-Whole Analysis
+------------------------------------------------ ab hier folgen SQL-Auszüge für die Part-tp-Whole Analysis
+
+ -- welche Kategorien tragen am meisten zum gesamten Gewinn bei
+ WITH category_sales AS (
+ SELECT
+ category,
+ SUM(sales_amount) AS total_sales
+ FROM gold.fact_sales AS fs
+ LEFT JOIN gold.dim_products AS dp
+ ON fs.product_key = dp.product_key
+ GROUP BY category
+ )
+ SELECT
+ category,
+ total_sales,
+ SUM(total_sales) OVER () AS overall_sales,
+ CONCAT(ROUND((CAST (total_sales AS FLOAT) / SUM(total_sales) OVER ()) * 100, 2), '%') AS percentage_of_total
+ FROM category_sales
+ ORDER BY total_sales DESC
+
+------------------------------------------------ ab hier folgen SQL-Auszüge für die Data Segmentation Analysis
 
