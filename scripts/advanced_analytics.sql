@@ -5,8 +5,8 @@ Dabei wird folgendes betrachtet:
 - Change-Over-Time
 - Cumulative Analysis
 - Performance Analysis
-- Part-to-Whole
-- Data Segmentation
+- Part-to-Whole Analysis
+- Data Segmentation Analysis
 - Reporting
 */
 
@@ -95,5 +95,5 @@ END AS previous_year_change
 FROM yearly_product_sales
 ORDER BY  product_name, order_year 
 
------------------------------------------------- ab hier folgen SQL-Auszüge für das Part-tp-Whole
+------------------------------------------------ ab hier folgen SQL-Auszüge für das Part-tp-Whole Analysis
 
