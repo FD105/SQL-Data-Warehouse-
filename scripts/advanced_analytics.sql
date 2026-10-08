@@ -47,7 +47,7 @@ ORDER BY DATETRUNC(month, order_date)
 
 ------------------------------------------------ ab hier folgen SQL-Auszüge für der Cumulative Analysis
  
--- Berechnen des gesamten Gewinns pro Jahr sowie der kumulativen Gewinne und durchschnittlichen Preise der Produkte über die Jahre
+ -- Berechnen des gesamten Gewinns pro Jahr sowie der kumulativen Gewinne und durchschnittlichen Preise der Produkte über die Jahre
 SELECT 
 order_date,
 total_sales,
@@ -101,7 +101,7 @@ ORDER BY  product_name, order_year
 
 ------------------------------------------------ ab hier folgen SQL-Auszüge für die Part-tp-Whole Analysis
 
- -- welche Kategorien tragen am meisten zum gesamten Gewinn bei
+  -- welche Kategorien tragen am meisten zum gesamten Gewinn bei
  WITH category_sales AS (
  SELECT
  category,
@@ -121,3 +121,78 @@ ORDER BY  product_name, order_year
 
 ------------------------------------------------ ab hier folgen SQL-Auszüge für die Data Segmentation Analysis
 
+ -- segmentieren von Produkten in Kosten-Bereiche -- zählen wie viele Produkte in die entsprechenden Bereiche fallen
+WITH product_segments AS (
+SELECT
+product_key,
+product_name,
+cost,
+CASE WHEN cost < 100 THEN 'Below 100'
+  WHEN cost BETWEEN 100 AND 500 THEN '100-500'
+  WHEN cost BETWEEN 500 AND 1000 THEN '500-1000'
+  ELSE 'Above 1000'
+END AS cost_range
+FROM gold.dim_products
+)
+SELECT
+cost_range,
+COUNT(product_key) AS total_products
+FROM product_segments
+GROUP BY cost_range
+ORDER BY total_products DESC
+
+ -- Kunden in Segmente einordnen basierend auf ihrem Kaufverhalten
+WITH customer_spending AS (
+SELECT
+dc.customer_key,
+SUM(fs.sales_amount) AS total_spending,
+MIN(fs.order_date) AS first_order,
+MAX(fs.order_date) AS last_order,
+DATEDIFF(month, MIN(fs.order_date), MAX(fs.order_date)) AS lifespan
+FROM gold.fact_sales AS fs
+LEFT JOIN gold.dim_customers AS dc
+ON fs.customer_key = dc.customer_key
+GROUP BY dc.customer_key
+)
+SELECT
+customer_key,
+total_spending,
+lifespan,
+CASE WHEN lifespan >= 12 AND total_spending > 5000 THEN 'VIP'
+  WHEN lifespan >= 12 AND total_spending <= 5000 THEN 'Regular'
+  ELSE 'New'
+END AS customer_segment
+FROM customer_spending
+ORDER BY total_spending DESC
+
+
+ -- aufbauend auf der vorherigen Query die Kunden in den verschiedenen Segmenten zählen
+WITH customer_spending AS (
+SELECT
+dc.customer_key,
+SUM(fs.sales_amount) AS total_spending,
+MIN(fs.order_date) AS first_order,
+MAX(fs.order_date) AS last_order,
+DATEDIFF(month, MIN(fs.order_date), MAX(fs.order_date)) AS lifespan
+FROM gold.fact_sales AS fs
+LEFT JOIN gold.dim_customers AS dc
+ON fs.customer_key = dc.customer_key
+GROUP BY dc.customer_key
+)
+
+SELECT 
+customer_segment,
+COUNT(customer_key) AS total_customers
+FROM (
+SELECT
+customer_key,
+CASE WHEN lifespan >= 12 AND total_spending > 5000 THEN 'VIP'
+  WHEN lifespan >= 12 AND total_spending <= 5000 THEN 'Regular'
+  ELSE 'New'
+END AS customer_segment
+FROM customer_spending
+) t
+GROUP BY customer_segment 
+ORDER BY total_customers DESC
+
+------------------------------------------------ ab hier folgen SQL-Auszüge für das Reporting
