@@ -47,7 +47,7 @@ WHERE order_date IS NOT NULL
 GROUP BY DATETRUNC(month, order_date)
 ORDER BY DATETRUNC(month, order_date)
 
------------------------------------------------- ab hier folgen SQL-Auszüge für der Cumulative Analysis
+------------------------------------------------ ab hier folgen SQL-Auszüge für die Cumulative Analysis
  
  -- Berechnen des gesamten Gewinns pro Jahr sowie der kumulativen Gewinne und durchschnittlichen Preise der Produkte über die Jahre
 SELECT 
