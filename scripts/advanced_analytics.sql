@@ -66,7 +66,7 @@ WHERE order_date IS NOT NULL
 GROUP BY DATETRUNC(year, order_date) 
 )t
 
------------------------------------------------- ab hier folgen SQL-Auszüge für der Performance Analysis
+------------------------------------------------ ab hier folgen SQL-Auszüge für die Performance Analysis
 
  -- Year-Over-Year-Analysis -- analysieren der jährlichen performance von Produkten durch das Vergleichen der Gewinne
  -- verglichen mit der durchschnittlichen Performance der Produkte und dem Gewinn des vorherigen Jahres
