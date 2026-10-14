@@ -10,7 +10,7 @@ Dabei wird folgendes betrachtet:
 - Reporting
 */
 
------------------------------------------------- ab hier folgen SQL-Auszüge für dem Change-Over-Time
+------------------------------------------------ ab hier folgen SQL-Auszüge für den Change-Over-Time
 
  -- gesamte Verkäufe pro Jahr
 SELECT
