@@ -2,7 +2,6 @@
 
 Project about building a data warehouse with SQL-Server, using ETL processes, data modeling, and analytics.
 
----
 
 ## Project Requirements:
 Building the Data Warehouse
@@ -24,7 +23,6 @@ The second step includes the developement of SQL-based analytics to deliver deta
 - **Sales Trends**
 The purpose of these insights is to provide stakeholders with key business metrics, which are intended to lead to a strategic decision-making.
 
----
 
 ## Data Architekture:
 The data architekture for this project follows the Medallion Architekture with the following layers:
@@ -35,7 +33,6 @@ The data architekture for this project follows the Medallion Architekture with t
 - **Silver Layer**: The focus of this layer is on cleaning, standardizing, and normalizing the data. This prepares the data for analysis.
 - **Gold Layer**: Includes business-ready data that is key for analytics and reporting.
 
----
 
 
 
